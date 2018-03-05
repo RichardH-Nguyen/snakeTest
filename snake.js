@@ -11,7 +11,7 @@ function JsSnake(ctx, xPosition, yPosition, frameLength) {
         this.ctx.fillStyle = "#fe57a1";
         this.ctx.fillRect(this.xPosition, this.yPosition, 30, 50);
 
-        setInterval(this.gameLoop, this.frameLength)
+        setInterval(this.gameLoop, this.frameLength) //run gameLoop at interval frameLength.
 
     };
 
@@ -19,8 +19,8 @@ function JsSnake(ctx, xPosition, yPosition, frameLength) {
 
         ctx.clearRect(0, 0, 100, 100);
         ctx.fillStyle = "#fe57a1";
-        ctx.fillRect(parseInt(this.xPosition), parseInt(this.yPosition), 30, 50);
-        this.yPosition += 4;
+        ctx.fillRect(parseInt(this.xPosition), parseInt(this.yPosition), 30, 50); //update position
+        this.yPosition += 4; //update x and y position variables.
         this.xPosition += 2;
 
 
@@ -38,8 +38,8 @@ $(function(){
    //ctx.fillStyle = "#fe57a1";
    //ctx.fillRect(10, 10 , 30, 30);
 
-    var snakeOb = new JsSnake(ctx, 0, 0, 500);
-    snakeOb.runGame();
+    var snakeOb = new JsSnake(ctx, 0, 0, 500); //create object
+    snakeOb.runGame(); //run game
 
 
 });
