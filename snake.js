@@ -39,7 +39,7 @@ $(function(){
    //ctx.fillRect(10, 10 , 30, 30);
 
     var snakeOb = new JsSnake(ctx, 0, 0, 500);
-    setInterval(snakeOb.runGame(), 500)
+    snakeOb.runGame();
 
 
 });
