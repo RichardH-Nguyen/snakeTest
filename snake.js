@@ -8,7 +8,7 @@ function JsSnake(ctx, xPosition, yPosition, frameLength) {
     this.runGame = function () {
 
 
-        this.ctx.fillStyle = "#fe57a1";
+        this.ctx.fillStyle = "blue";
         this.ctx.fillRect(this.xPosition, this.yPosition, 30, 50);
         console.log(this.xPosition);
         //setInterval(this.gameLoop, this.frameLength, this.ctx, this.xPosition, this.yPosition); //run gameLoop at interval frameLength.
@@ -24,7 +24,7 @@ function JsSnake(ctx, xPosition, yPosition, frameLength) {
         x += 2;
         y += 4;
         ctx.clearRect(0, 0, 100, 100);
-        ctx.fillStyle = "#fe57a1";
+        ctx.fillStyle = "blue";
         console.log('square');
         ctx.fillRect(x, y, 30, 50); //update position
         console.log(x);
