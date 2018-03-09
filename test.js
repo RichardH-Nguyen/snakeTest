@@ -5,7 +5,7 @@ $(function(){
     var blockSize = 5;
     var currentDirect = "right";
     var newDirect = "";
-    var opDirect = "left";
+    var opDirect = "left"; //Opposite direction used so the snake can't go back on itself.
 
     var canvas = $("#snakeCan").get(0); //DOM element of canvas
     var ctx = canvas.getContext("2d"); //context of canvas
@@ -14,7 +14,7 @@ $(function(){
     var snakeArray = [];
     snakeArray.push([1, 1]);
     snakeArray.push([2, 1]);//array properties = [x,y]
-    setInterval(function () {
+    var gameStart = setInterval(function () {
         //x += 2;
         //y += 0;
         //ctx.clearRect(0, 0, 500, 500);
@@ -24,7 +24,7 @@ $(function(){
         //ctx.fillRect(snakeArray[1][0] + x, snakeArray[1][1] + y ,10, 10);
         createBlock(snakeArray);
         move(snakeArray);
-        console.log(snakeArray.length)
+        //console.log(snakeArray)
 
     }, frameLength);
 
@@ -41,13 +41,22 @@ $(function(){
 
         var newPosition = array[0].slice();
 
+
         if(currentDirect === "left"){newPosition[0] -= 1}
         else if(currentDirect === "up"){newPosition[1] -= 1}
         else if(currentDirect === "right"){newPosition[0] += 1}
         else if(currentDirect === "down"){newPosition[1] += 1}
 
-        array.unshift(newPosition);
-        //array.pop();
+        var collide = collisionDetection(newPosition[0], newPosition[1], array);
+        console.log(collide);
+
+        if(collide === false) {
+            array.unshift(newPosition);
+            //array.pop();
+
+        }
+        else
+            gameOver();
     }
     function control(){
         $(document).keydown(function (event) {
@@ -88,5 +97,20 @@ $(function(){
                 opDirect = "up";
             }
         }
+    }
+
+    function collisionDetection(x, y, array){
+        for(var i = 0 ; i < array.length ; i++){
+            if(array[i][0] === x && array[i][1] === y){
+                console.log(array[i][0]);
+                return true;
+            }
+            return false;
+        }
+
+    }
+
+    function gameOver(){
+        clearInterval(gameStart);
     }
 });
