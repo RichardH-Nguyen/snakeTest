@@ -6,6 +6,7 @@ $(function(){
     var currentDirect = "right";
     var newDirect = "";
     var opDirect = "left"; //Opposite direction used so the snake can't go back on itself.
+    var collide;
 
     var canvas = $("#snakeCan").get(0); //DOM element of canvas
     var ctx = canvas.getContext("2d"); //context of canvas
@@ -13,7 +14,7 @@ $(function(){
 
     var snakeArray = [];
     snakeArray.push([1, 1]);
-    snakeArray.push([2, 1]);//array properties = [x,y]
+    //snakeArray.push([2, 1]);//array properties = [x,y]
     var gameStart = setInterval(function () {
         //x += 2;
         //y += 0;
@@ -42,16 +43,25 @@ $(function(){
         var newPosition = array[0].slice();
 
 
-        if(currentDirect === "left"){newPosition[0] -= 1}
-        else if(currentDirect === "up"){newPosition[1] -= 1}
-        else if(currentDirect === "right"){newPosition[0] += 1}
-        else if(currentDirect === "down"){newPosition[1] += 1}
+        if(currentDirect === "left"){
+            newPosition[0] -= 1
+        }
+        else if(currentDirect === "up"){
+            newPosition[1] -= 1
+        }
+        else if(currentDirect === "right"){
+            newPosition[0] += 1
+        }
+        else if(currentDirect === "down"){
+            newPosition[1] += 1
+        }
 
-        var collide = collisionDetection(newPosition[0], newPosition[1], array);
+        collide = collisionDetection(newPosition[0], newPosition[1], array);
         console.log(collide);
 
         if(collide === false) {
             array.unshift(newPosition);
+            console.log();
             //array.pop();
 
         }
@@ -74,6 +84,9 @@ $(function(){
             }
             else if(keyNum === 40) {
                 newDirect = "down"
+            }
+            else{
+                return;
             }
 
             validDirect();
@@ -100,13 +113,19 @@ $(function(){
     }
 
     function collisionDetection(x, y, array){
+        //console.log(array.length);
+        var bool;
         for(var i = 0 ; i < array.length ; i++){
+
             if(array[i][0] === x && array[i][1] === y){
-                console.log(array[i][0]);
-                return true;
+                bool = true;
             }
-            return false;
+            else{
+                bool = false;
+            }
         }
+
+        return bool;
 
     }
 
