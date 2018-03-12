@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="8221bacd-d483-4c42-93f1-1401c8631efe" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/snake.html" afterPath="$PROJECT_DIR$/snake.html" />
-      <change beforePath="$PROJECT_DIR$/snake.js" afterPath="$PROJECT_DIR$/snake.js" />
-      <change beforePath="$PROJECT_DIR$/test.js" afterPath="$PROJECT_DIR$/test.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -148,7 +145,7 @@
       <updated>1520196346537</updated>
       <workItem from="1520196352956" duration="17366000" />
       <workItem from="1520276971440" duration="25074000" />
-      <workItem from="1520626172832" duration="30722000" />
+      <workItem from="1520626172832" duration="30791000" />
     </task>
     <task id="LOCAL-00001" summary="NaN troubles...">
       <created>1520276981961</created>
@@ -206,11 +203,18 @@
       <option name="project" value="LOCAL" />
       <updated>1520643972896</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="got to 'snake' objects on screen! They can only tell if they run into themselves though.">
+      <created>1520815588227</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1520815588227</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="73162000" />
+    <option name="totallyTimeSpent" value="73231000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="30" y="23" width="1302" height="1017" extended-state="0" />
@@ -245,7 +249,8 @@
     <MESSAGE value="setTimeout troubles..." />
     <MESSAGE value="Added controls to snake in test.js" />
     <MESSAGE value="added fome functions, working on collision detection" />
-    <option name="LAST_COMMIT_MESSAGE" value="added fome functions, working on collision detection" />
+    <MESSAGE value="got to 'snake' objects on screen! They can only tell if they run into themselves though." />
+    <option name="LAST_COMMIT_MESSAGE" value="got to 'snake' objects on screen! They can only tell if they run into themselves though." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
