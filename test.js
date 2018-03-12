@@ -6,26 +6,20 @@ $(function(){
     var currentDirect = "right";
     var newDirect = "";
     var opDirect = "left"; //Opposite direction used so the snake can't go back on itself.
-    var collide;
+    //var collide = false;
 
     var canvas = $("#snakeCan").get(0); //DOM element of canvas
     var ctx = canvas.getContext("2d"); //context of canvas
     ctx.fillStyle = "blue";
 
-    var snakeArray = [];
-    snakeArray.push([1, 1]);
-    //snakeArray.push([2, 1]);//array properties = [x,y]
+    var snakeP1 = []; //array properties = ([x,y], currentDirect, opDirect, collision, color)
+    snakeP1.push([1, 1]);
+
     var gameStart = setInterval(function () {
-        //x += 2;
-        //y += 0;
-        //ctx.clearRect(0, 0, 500, 500);
-        //ctx.fillStyle = "blue";
-        //console.log(snakeArray[0][0]);
-        //ctx.fillRect(snakeArray[0][0] + x, snakeArray[0][1] + y ,10, 10);
-        //ctx.fillRect(snakeArray[1][0] + x, snakeArray[1][1] + y ,10, 10);
-        createBlock(snakeArray);
-        move(snakeArray);
-        //console.log(snakeArray)
+
+        createBlock(snakeP1);
+        move(snakeP1);
+        console.log(snakeP1)
 
     }, frameLength);
 
@@ -33,6 +27,7 @@ $(function(){
         for( var i = 0 ; i < array.length ; i++){
             x = array[i][0] * blockSize;
             y = array[i][1] * blockSize;
+            //ctx.fillStyle = array[4];
             ctx.fillRect(x, y, blockSize, blockSize)
         }
     }
@@ -56,12 +51,12 @@ $(function(){
             newPosition[1] += 1
         }
 
-        collide = collisionDetection(newPosition[0], newPosition[1], array);
-        console.log(collide);
+        var collide = collisionDetection(newPosition[0], newPosition[1], array);
+        //console.log(collide);
 
         if(collide === false) {
             array.unshift(newPosition);
-            console.log();
+            console.log(newPosition);
             //array.pop();
 
         }
@@ -70,11 +65,12 @@ $(function(){
     }
     function control(){
         $(document).keydown(function (event) {
+
             //keycodes: l = 37, u = 38, r = 39, d = 40
             var keyNum = event.keyCode;
 
             if(keyNum === 37){
-                newDirect = "left";
+                newDirect = "left"
             }
             else if(keyNum === 38){
                 newDirect = "up"
@@ -114,15 +110,13 @@ $(function(){
 
     function collisionDetection(x, y, array){
         //console.log(array.length);
-        var bool;
+        var bool = false;
         for(var i = 0 ; i < array.length ; i++){
 
             if(array[i][0] === x && array[i][1] === y){
                 bool = true;
             }
-            else{
-                bool = false;
-            }
+
         }
 
         return bool;
@@ -131,5 +125,6 @@ $(function(){
 
     function gameOver(){
         clearInterval(gameStart);
+        alert("game over");
     }
 });
