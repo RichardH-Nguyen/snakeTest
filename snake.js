@@ -9,12 +9,13 @@ function JsSnake(ctx, xPosition, yPosition, blockSize, currDirect, opDirect, col
         this.color = color;
 
 
-        this.collide = false;
-        this.collideOuter = false;
+        this.collide = false; //collides with itself when true
+        this.collideOuter = false; // collides with other player if true.
         this.snake = [];
         this.snake.push([this.xPosition, this.yPosition]);
 
         this.createBlock = function () {
+            //creates block at the indicated position
             for (var i = 0; i < this.snake.length; i++) {
                 this.xPosition = this.snake[i][0] * blockSize;
                 this.yPosition = this.snake[i][1] * blockSize;
@@ -26,10 +27,9 @@ function JsSnake(ctx, xPosition, yPosition, blockSize, currDirect, opDirect, col
         };
 
         this.move = function () {
-
-
+            //copies the x and y coordinates of the snake and creates a new position based on its
+            //current direction.
             var newPosition = this.snake[0].slice();
-
 
             if (this.currDirect === "left") {
                 newPosition[0] -= 1
@@ -44,24 +44,17 @@ function JsSnake(ctx, xPosition, yPosition, blockSize, currDirect, opDirect, col
                 newPosition[1] += 1
             }
 
+            //checks to see if it has collided with itself or the boundaries.
             this.collide = this.collisionInner(newPosition[0], newPosition[1]);
 
-
+            //if it hasnt put new x and y coordinates at the beginning of the array
             if(this.collide === false) {
                 this.snake.unshift(newPosition);
-
-                //array.pop();
-
             }
-            else{
-                console.log(this.collide);
-                //this.gameOver();
-            }
-
         };
 
         this.collisionInner = function (x, y) {
-            //console.log(array.length);
+            //Checks to see if it collides with itself or the boundaries of the canvas.
             var bool = false;
             for (var i = 0; i < this.snake.length; i++) {
 
@@ -79,11 +72,6 @@ function JsSnake(ctx, xPosition, yPosition, blockSize, currDirect, opDirect, col
 
             return bool;
         };
-
-        this.gameOver = function () {
-            alert("what")
-        }
-
 }
 
 
@@ -95,8 +83,6 @@ $(function(){
    var ctx = canvas.getContext("2d"); //context of canvas
     ctx.fillStyle = "black";
     ctx.fillRect(0,0,1000, 700);
-
-   //ctx.fillRect(10, 10 , 30, 30);
 
     var snakeP2 = new JsSnake(ctx, 95, 65, 10, "left", "right", "#ffcb30");
     var snakeOb = new JsSnake(ctx, 1, 2, 10, "right", "left", "#6bd2ff"); //create object
@@ -126,6 +112,7 @@ $(function(){
     }
 
     function controlP1(object){
+        //Player one controls
         $(document).keydown(function (event) {
             var newDirect = object.currDirect;
             //keycodes: left arrow = 37, up arrow = 38, right arrow = 39, down arrow = 40
@@ -156,6 +143,7 @@ $(function(){
     }
 
     function controlP2(object){
+        //Player 2 controls
         $(document).keydown(function (event) {
             var newDirect;
             //keys: w = 65, a = 87, s = 68, d = 83
@@ -185,7 +173,7 @@ $(function(){
     }
 
     function validDirect(newDirect, object){
-        //var currentDirect;
+        //Prevents snake from going back on itself.
         if(newDirect !== object.opDirect){
             object.currDirect = newDirect;
             if(object.currDirect === "left"){
@@ -205,7 +193,8 @@ $(function(){
     }
 
     function collisionOuter(x, y, array) {
-        //console.log(array.length);
+        //Similar to collisionInner in JsSnake class.
+        //But this checks to see if it collides with the other snake.
         var bool = false;
         for (var i = 0; i < array.length; i++) {
 
@@ -218,15 +207,14 @@ $(function(){
     }
 
     function declareWinner(object1, object2){
+        //Declares the winner or a tie game if both snakes run head on.
         if(object1.collide!== true && object1.collideOuter!== true){
-
             ctx.font = "30px Arial";
             ctx.fillStyle = object1.color;
             ctx.textAlign = "center";
             ctx.fillText("BLUE wins", canvas.width/2, canvas.height/2);
         }
         else if(object2.collide !== true && object2.collideOuter!== true){
-
             ctx.font = "30px Arial";
             ctx.fillStyle = object2.color;
             ctx.textAlign = "center";
@@ -240,6 +228,7 @@ $(function(){
     }
 
     function gameLoop(object1, object2){
+        //This may replace the code in the current setInterval at a later date.
         object2.createBlock();
         object1.createBlock();
 
