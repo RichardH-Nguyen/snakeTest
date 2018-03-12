@@ -1,3 +1,5 @@
+
+//Used this to test out code and get a basic structure for how the code will work for the class.
 $(function(){
     var x = 0;
     var y = 0;

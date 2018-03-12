@@ -1,16 +1,16 @@
 //JsSnake object
-function JsSnake(ctx, xPosition, yPosition, frameLength, blockSize, currDirect, opDirect, color) {
+function JsSnake(ctx, xPosition, yPosition, blockSize, currDirect, opDirect, color) {
         this.ctx = ctx;
         this.xPosition = xPosition;
         this.yPosition = yPosition;
-        this.frameLength = frameLength; //might not need this in class
         this.blockSize = blockSize;
         this.currDirect = currDirect;
         this.opDirect = opDirect;
         this.color = color;
 
-        this.newDirect = "";
+
         this.collide = false;
+        this.collideOuter = false;
         this.snake = [];
         this.snake.push([this.xPosition, this.yPosition]);
 
@@ -18,13 +18,15 @@ function JsSnake(ctx, xPosition, yPosition, frameLength, blockSize, currDirect, 
             for (var i = 0; i < this.snake.length; i++) {
                 this.xPosition = this.snake[i][0] * blockSize;
                 this.yPosition = this.snake[i][1] * blockSize;
-                ctx.fillStyle = this.color;
-                ctx.fillRect(this.xPosition, this.yPosition, this.blockSize, this.blockSize)
+                this.ctx.shadowBlur = 5;
+                this.ctx.shadowColor = "white";
+                this.ctx.fillStyle = this.color;
+                this.ctx.fillRect(this.xPosition, this.yPosition, this.blockSize, this.blockSize)
             }
         };
 
         this.move = function () {
-            //this.control();
+
 
             var newPosition = this.snake[0].slice();
 
@@ -42,78 +44,34 @@ function JsSnake(ctx, xPosition, yPosition, frameLength, blockSize, currDirect, 
                 newPosition[1] += 1
             }
 
-            this.collide = this.collisionDetection(newPosition[0], newPosition[1]);
+            this.collide = this.collisionInner(newPosition[0], newPosition[1]);
 
 
-            if (this.collide === false) {
+            if(this.collide === false) {
                 this.snake.unshift(newPosition);
-                console.log(newPosition);
+
                 //array.pop();
 
             }
-            else
-            this.gameOver();
-        };
-
-        this.control = function () {
-
-            var direct = $(document).keydown(function (event) {
-
-                //keycodes: l = 37, u = 38, r = 39, d = 40
-                var keyNum = event.keyCode;
-                var direct;
-
-                if (keyNum === 37) {
-
-                    direct = "left"
-                }
-                else if (keyNum === 38) {
-                    direct = "up"
-                }
-                else if (keyNum === 39) {
-                    direct = "right"
-                }
-                else if (keyNum === 40) {
-                    direct = "down"
-                }
-                else {
-                    return;
-                }
-                return direct;
-
-            });
-
-
-            this.validDirect(direct);
-
-
-        };
-
-        this.validDirect = function (direct) {
-            console.log(direct);
-            if (direct !== this.opDirect) {
-                this.currDirect = direct;
-                if (this.currDirect === "left") {
-                    this.opDirect = "right";
-                }
-                else if (this.currDirect === "up") {
-                    this.opDirect = "down";
-                }
-                else if (this.currDirect === "right") {
-                    this.opDirect = "left";
-                }
-                else if (this.currDirect === "down") {
-                    this.opDirect = "up";
-                }
+            else{
+                console.log(this.collide);
+                //this.gameOver();
             }
+
         };
 
-        this.collisionDetection = function (x, y) {
+        this.collisionInner = function (x, y) {
             //console.log(array.length);
             var bool = false;
             for (var i = 0; i < this.snake.length; i++) {
 
                 if (this.snake[i][0] === x && this.snake[i][1] === y) {
+                    bool = true;
+                }
+                else if(x < 0 || x > 100){
+                    bool = true;
+                }
+                else if(y < 0 || y > 70){
                     bool = true;
                 }
 
@@ -123,7 +81,7 @@ function JsSnake(ctx, xPosition, yPosition, frameLength, blockSize, currDirect, 
         };
 
         this.gameOver = function () {
-            alert("gameover")
+            alert("what")
         }
 
 }
@@ -135,11 +93,13 @@ $(function(){
    var canvas = $("#snakeCan").get(0); //DOM element of canvas
 
    var ctx = canvas.getContext("2d"); //context of canvas
+    ctx.fillStyle = "black";
+    ctx.fillRect(0,0,1000, 700);
 
    //ctx.fillRect(10, 10 , 30, 30);
 
-    var snakeP2 = new JsSnake(ctx, 5, 9, 200, 10, "right", "left", "red");
-    var snakeOb = new JsSnake(ctx, 1, 2, 200, 10, "right", "left", "blue"); //create object
+    var snakeP2 = new JsSnake(ctx, 95, 65, 10, "left", "right", "#ffcb30");
+    var snakeOb = new JsSnake(ctx, 1, 2, 10, "right", "left", "#6bd2ff"); //create object
     //var snakeP2 = new JsSnake(ctx, 100, 200, 500, 10, "right", "left", "red");
     var gameStart = setInterval(function () {
 
@@ -150,9 +110,16 @@ $(function(){
         snakeOb.move();
         controlP1(snakeOb);
         controlP2(snakeP2);
+        snakeOb.collideOuter = collisionOuter(snakeOb.snake[0][0], snakeOb.snake[0][1], snakeP2.snake);
+        snakeP2.collideOuter = collisionOuter(snakeP2.snake[0][0], snakeP2.snake[0][1], snakeOb.snake);
+        console.log(snakeOb.collide);
 
+        if (snakeOb.collide === true || snakeOb.collideOuter === true || snakeP2.collide === true || snakeP2.collideOuter === true){
+            clearInterval(gameStart);
+           declareWinner(snakeOb, snakeP2);
+        }
 
-    }, snakeOb.frameLength);
+    }, 100);
 
     if(snakeOb.collide === true){
         clearInterval(gameStart);
@@ -182,7 +149,7 @@ $(function(){
             }
 
             validDirect(newDirect, object);
-            console.log(newDirect);
+
 
 
         })
@@ -234,6 +201,54 @@ $(function(){
                 object.opDirect = "up";
             }
         }
+
+    }
+
+    function collisionOuter(x, y, array) {
+        //console.log(array.length);
+        var bool = false;
+        for (var i = 0; i < array.length; i++) {
+
+            if (array[i][0] === x && array[i][1] === y) {
+                bool = true;
+            }
+
+        }
+        return bool;
+    }
+
+    function declareWinner(object1, object2){
+        if(object1.collide!== true && object1.collideOuter!== true){
+
+            ctx.font = "30px Arial";
+            ctx.fillStyle = object1.color;
+            ctx.textAlign = "center";
+            ctx.fillText("BLUE wins", canvas.width/2, canvas.height/2);
+        }
+        else if(object2.collide !== true && object2.collideOuter!== true){
+
+            ctx.font = "30px Arial";
+            ctx.fillStyle = object2.color;
+            ctx.textAlign = "center";
+            ctx.fillText("RED wins", canvas.width/2, canvas.height/2);
+        }else{
+            ctx.font = "30px Arial";
+            ctx.fillStyle = "#ffffff";
+            ctx.textAlign = "center";
+            ctx.fillText("TIE!", canvas.width/2, canvas.height/2);
+        }
+    }
+
+    function gameLoop(object1, object2){
+        object2.createBlock();
+        object1.createBlock();
+
+        object2.move();
+        object1.move();
+        controlP1(object1);
+        controlP2(object2);
+        object1.collideOuter = collisionOuter(object1.snake[0][0], object1.snake[0][1], object2.snake);
+        object2.collideOuter = collisionOuter(object2.snake[0][0], object2.snake[0][1], object1.snake);
 
     }
 });
